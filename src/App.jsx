@@ -2,16 +2,18 @@ import './App.css'
 import { useMinefield } from './hooks/useMinefield'
 
 function App() {
-  const { field } = useMinefield();
+  const { minefield } = useMinefield();
+
+  console.log(minefield);
 
   return (
     <div>
       Minefield!
-      {field.map((row, index) => (
+      {minefield.map((row, index) => (
         <div key={`row-${index}`} style={{display: 'flex'}}>
           {row.map((col, colIndex) => (
             <div  key={`row-${colIndex}`}>
-              <button></button>
+              <button>{col}</button>
             </div>
           )) }
         </div>
