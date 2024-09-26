@@ -11,7 +11,7 @@ function App() {
         {minefield.map((row, rowIndex) => (
           <div key={`row-${rowIndex}`} style={{ display: "flex", gap: "2px" }}>
             {row.map((col, colIndex) => (
-              <div key={`row-${colIndex}`} className="cell">
+              <div key={`col-${rowIndex}---${colIndex}`} className="cell">
                 <button
                   onClick={() => open(rowIndex, colIndex)}
                   style={col.isMine && col.isOpen ? { background: "red" } : {}}
