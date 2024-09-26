@@ -1,3 +1,9 @@
+/**
+ * Receives a size, and returns a new matrix with default values
+ *
+ * @param {number} size Size of the field
+ * @returns {{isMine: false, isOpen: false, value: 0}[][]}
+ */
 export function createField(size) {
   return Array(size)
     .fill()
@@ -16,28 +22,15 @@ export function createField(size) {
 }
 
 function random(min, max) {
-  return Math.random() * (max - min) + min;
+  return Math.floor(Math.random() * (max - min) + min);
 }
 
-function getMineLocation(min, max) {
-  return Math.floor(random(min, max)) - 1;
-}
-
-// check rows
-// function checkYAxis(minefield, y, x) {
-//   return minefield.slice(y - 1 > 0 ? y - 1 : 0, y + 2).reduce((acc, curr) => {
-//     acc += checkXAxis(curr, x);
-//     return acc;
-//   }, 0);
-// }
-
-// check columns
-// function checkXAxis(minefieldRow = [], x) {
-//   return minefieldRow
-//     .slice(x - 1 > 0 ? x - 1 : 0, x + 2)
-//     .filter((y) => y.isMine).length;
-// }
-
+/**
+ *
+ * @param {*} minefield
+ * @param {*} y
+ * @param {*} x
+ */
 export function openRow(minefield, y, x) {
   console.log(y, x);
   if (
@@ -85,7 +78,7 @@ function fillXAxis(minefieldRow = [], x) {
   if (x > 0) {
     minefieldRow[x - 1].value++;
   }
-  if (x < minefieldRow.length) {
+  if (x + 1 < minefieldRow.length) {
     minefieldRow[x + 1].value++;
   }
   if (!minefieldRow[x].isMine) {
@@ -115,31 +108,6 @@ export function fillNumbers(field, mines) {
   return field;
 }
 
-// export function checkSurrounds(minefieldRow, x) {
-//   let next = { isMine: false };
-//   let index = x;
-
-//   while (next && !next.isMine) {
-//     const minesAround = checkXAxis(minefieldRow, index);
-
-//     minefieldRow[index] = {
-//       isMine: false,
-//       isOpen: true,
-//       value: minesAround,
-//     };
-
-//     if (minesAround === 0) {
-//       next = minefieldRow[index + 1];
-//     } else {
-//       next = null;
-//     }
-
-//     index++;
-//   }
-
-//   return minefieldRow;
-// }
-
 export function placeMines(field) {
   const minesLocations = [];
   const newField = [...field];
@@ -152,7 +120,7 @@ export function placeMines(field) {
       ...new Set(
         Array(minesPerRow)
           .fill()
-          .map(() => getMineLocation(0, row.length - 1))
+          .map(() => random(0, row.length))
       ),
     ];
 
@@ -167,6 +135,20 @@ export function placeMines(field) {
   });
 
   return { minefield, minesLocations };
+}
+
+function checkYAxis(minefield, y, x) {
+  return minefield.slice(y - 1 > 0 ? y - 1 : 0, y + 2).reduce((acc, curr) => {
+    acc += checkXAxis(curr, x);
+    return acc;
+  }, 0);
+}
+
+// check columns
+function checkXAxis(minefieldRow = [], x) {
+  return minefieldRow
+    .slice(x - 1 > 0 ? x - 1 : 0, x + 2)
+    .filter((y) => y.isMine).length;
 }
 
 export function startField(size = 9) {

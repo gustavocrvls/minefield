@@ -9,7 +9,7 @@ function App() {
       <h1>Minefield!</h1>
       <div className="field">
         {minefield.map((row, rowIndex) => (
-          <div key={`row-${rowIndex}`} style={{ display: "flex", gap: "2px" }}>
+          <div key={`row-${rowIndex}`} style={{ display: "flex" }}>
             {row.map((col, colIndex) => (
               <div key={`col-${rowIndex}---${colIndex}`} className="cell">
                 <button
